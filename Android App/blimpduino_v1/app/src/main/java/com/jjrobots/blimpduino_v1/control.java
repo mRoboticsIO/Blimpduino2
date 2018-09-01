@@ -37,6 +37,7 @@ public class control extends AppCompatActivity {
     Button Bdown;
     TextView textDebug;
     ToggleButton AltHold;
+    ToggleButton YawAssist;
     int Bup_pressed=0;
     int Bdown_pressed=0;
 
@@ -85,6 +86,7 @@ public class control extends AppCompatActivity {
         Bup = (Button) findViewById(R.id.buttonUp);
         Bdown = (Button) findViewById(R.id.buttonDown);
         AltHold = (ToggleButton) findViewById(R.id.toggleButAlt);
+        YawAssist = (ToggleButton) findViewById(R.id.toggleButYaw);
 
         SBthrottle.setOnSeekBarChangeListener(new speedBarAxisListener());
         SBsteering.setOnSeekBarChangeListener(new speedBarAxisListener());
@@ -92,6 +94,8 @@ public class control extends AppCompatActivity {
         Bdown.setOnTouchListener(new buttonDownListener());
         textDebug = (TextView)findViewById(R.id.textDebug);
         AltHold.setOnCheckedChangeListener(new test());
+        YawAssist.setOnCheckedChangeListener(new toggleButtonYawAssistListener());
+
 
         touchVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -324,11 +328,27 @@ public class control extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             touchVibrator.vibrate(80);
             if (isChecked) {
-                iCH5=1;
+                iCH5=iCH5|1; //ORing
                 UDPM.iState = 1; // Seems to activate the UDP????? Jordi.
             } else {
                 // The toggle is disabled
-                iCH5=0;
+                iCH5=iCH5&(~1); //NORing 1 and then ANDing
+            }
+        }
+    }
+
+    //toggleButtonYawAssistListener
+
+    private class toggleButtonYawAssistListener implements ToggleButton.OnCheckedChangeListener{
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            touchVibrator.vibrate(80);
+            if (isChecked) {
+                iCH5=iCH5|2; //ORing
+                UDPM.iState = 1; // Seems to activate the UDP????? Jordi.
+            } else {
+                // The toggle is disabled
+                iCH5=iCH5&(~2); //NORing 2 and then ANDing
             }
         }
     }

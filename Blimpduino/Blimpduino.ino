@@ -7,7 +7,7 @@
 // Updated: 10/02/2018
 // Version: 1.02
 // License: GPL v2
-// Compiled and tested with Arduino 1.6.8. This new version of code does not need external libraries (only Arduino standard libraries)
+// Compiled and tested with Arduino 1.8.5.
 // Project URL:
 
 #include <Wire.h>
@@ -246,8 +246,9 @@ void setup()
   SerialUSB.print("Laser Alt:");
   SerialUSB.println(laser_height);
 
-  SerialUSB.println("Blimpduino by JJROBOTS v0.10");
+  SerialUSB.println("Blimpduino by JJROBOTS & mRo v0.10");
   SerialUSB.println("Start...");
+  
   timer_laser_old = micros();
   timer_mpu_old = micros();
 
@@ -292,7 +293,11 @@ void loop()
     modeSelector = 1;
   }
 
-  if ((modeSelector != 3) && (modeSelector != 4)) { //Resets the angle so it avoids overshooting and knows what angle to keep when yawStabilize is selected.
+  if ((iCH5 & 2) == 2){
+    modeSelector+=2;
+  }
+
+  if ((modeSelector != 2) && (modeSelector != 3)) { //Resets the angle so it avoids overshooting and knows what angle to keep when yawStabilize is selected.
     target_angle = MPU_yaw_angle;
   }
 

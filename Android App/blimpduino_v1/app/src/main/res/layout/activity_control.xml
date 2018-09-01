@@ -90,5 +90,15 @@
             android:textOff="Alt Off"
             android:textOn="Alt On" />
 
+        <ToggleButton
+            android:id="@+id/toggleButYaw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="TB_yawAssist"
+            android:textOff="Yaw Off"
+            android:textOn="Yaw ON" />
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
