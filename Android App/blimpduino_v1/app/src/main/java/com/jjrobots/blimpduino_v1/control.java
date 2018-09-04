@@ -125,7 +125,10 @@ public class control extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                // update TextView here!
+                                /**
+                                * Aquí vas o por qué ests enviando el debug de la instancia
+                                * así cada medio segundo?
+                                */
                                 textDebug.setText(MyProperties.getInstance().debug);
                             }
                         });
