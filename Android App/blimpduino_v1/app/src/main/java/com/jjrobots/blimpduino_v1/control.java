@@ -101,7 +101,6 @@ public class control extends AppCompatActivity {
 
         // Start UDP message sender
         UDPM = new sendUDPmessage();
-        UDPM.iState = 0;  // Manual control mode
         UDPM_thread = new Thread(UDPM);
         UDPM_thread.start();
 
@@ -224,7 +223,6 @@ public class control extends AppCompatActivity {
 
     public class sendUDPmessage implements Runnable {
 
-        public int iState;
         public void run() {
             byte[] buf = new byte[25];
             ByteBuffer ibuf = ByteBuffer.allocate(4);
@@ -235,8 +233,6 @@ public class control extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (iState == 0)
-                    continue;
 
                 iCH1 = (SBthrottle.getProgress() - 500);
                 iCH2 = (SBsteering.getProgress() - 500);
@@ -297,7 +293,6 @@ public class control extends AppCompatActivity {
                 Bup.setText("--");
                 Bup_pressed = 1;
                 touchVibrator.vibrate(80);
-                UDPM.iState = 1;
 
             }
             if (e.getAction() == MotionEvent.ACTION_UP ){
@@ -313,7 +308,6 @@ public class control extends AppCompatActivity {
                 Bdown.setText("--");
                 Bdown_pressed = 1;
                 touchVibrator.vibrate(80);
-                UDPM.iState = 1;
             }
             if (e.getAction() == MotionEvent.ACTION_UP ){
                 Bdown.setText("DOWN");
@@ -329,7 +323,6 @@ public class control extends AppCompatActivity {
             touchVibrator.vibrate(80);
             if (isChecked) {
                 iCH5=iCH5|1; //ORing
-                UDPM.iState = 1; // Seems to activate the UDP????? Jordi.
             } else {
                 // The toggle is disabled
                 iCH5=iCH5&(~1); //NORing 1 and then ANDing
@@ -345,7 +338,6 @@ public class control extends AppCompatActivity {
             touchVibrator.vibrate(80);
             if (isChecked) {
                 iCH5=iCH5|2; //ORing
-                UDPM.iState = 1; // Seems to activate the UDP????? Jordi.
             } else {
                 // The toggle is disabled
                 iCH5=iCH5&(~2); //NORing 2 and then ANDing
@@ -363,7 +355,8 @@ public class control extends AppCompatActivity {
 
             textDebug.setText(MyProperties.getInstance().debug);
 
-            UDPM.iState = 1;
+            // UDPM.iState = 1; in memory of Jordi ;)
+
             // SOCKET message should be implemented on other thread
             //sendUDPmessage UDPM = new sendUDPmessage();
             //UDPM.iState = 0;  // Manual control mode
