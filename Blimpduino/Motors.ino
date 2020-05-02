@@ -74,7 +74,7 @@ void m_set_direct(int motor, int value) { //The same as m_set below but with Dea
     case 5: //Will set all motor at the same time. WARNING Reverse not working yet. 
       output_motor_direct(value, 5, 6);
       output_motor_direct(value, 9, 10);
-      output_motor_direct(value, 7, 8);
+      output_motor_direct(value, 8, 7);
       output_motor_direct(value, 11, 12);
       break;
     default:
@@ -109,7 +109,7 @@ void output_motor_direct(int value, uint8_t pin1, uint8_t pin2) //Direct motor c
         val = (value * 2);
       //sprintf(srt_out, "Spd:%03d Forward Pin1:%02d Pin2:%02d", int(val), int(pin1), int(pin2));
       //SerialUSB.println(srt_out);
-
+      digitalWrite(pin1, LOW);
       analogWrite(pin1, 0);//digitalWrite(pin1, LOW); <---When using DigitalWrite it creates a bug in certain conditions.
       analogWrite(pin2, val); //"Fordward"
     }
@@ -122,6 +122,7 @@ void output_motor_direct(int value, uint8_t pin1, uint8_t pin2) //Direct motor c
       //sprintf(srt_out, "Spd:%03d Backward Pin1:%02d Pin2:%02d", int(val), int(pin1), int(pin2));
       //SerialUSB.println(srt_out);
 
+      digitalWrite(pin2, LOW);
       analogWrite(pin2, 0); //digitalWrite(pin2, LOW); <---When using DigitalWrite it creates a bug in certain conditions.
       analogWrite(pin1, val); //Reverse
     }
@@ -131,8 +132,8 @@ void output_motor_direct(int value, uint8_t pin1, uint8_t pin2) //Direct motor c
     //sprintf(srt_out, "Spd:%03d Stop! Pin1:%02d Pin2:%02d", int(val), int(pin1), int(pin2));
     //SerialUSB.println(srt_out);
 
-    //digitalWrite(pin1, LOW);
-    //digitalWrite(pin2, LOW);
+    digitalWrite(pin1, LOW);
+    digitalWrite(pin2, LOW);
     analogWrite(pin1, 0);
     analogWrite(pin2, 0);
   }

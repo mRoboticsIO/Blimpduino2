@@ -2,7 +2,7 @@
 void TTLcmd(void) {
 
   int loopClosed = 0;
-  static byte power= 20; //power in power %
+  static byte power= 10; //power in power %
 
   do{
     if (SerialUSB.available() > 0)

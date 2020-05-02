@@ -13,6 +13,9 @@
 #include <Wire.h>
 #include <SparkFun_VL53L1X_Arduino_Library.h>
 #include <vl53l1_register_map.h>
+#include <Adafruit_BMP280.h>
+
+Adafruit_BMP280 bme;
 
 #define TELEMETRY "192.168.4.2" // Default telemetry server (first client) port 2223
 
@@ -56,6 +59,8 @@
 #define m1_rev 0
 #define m2_rev 1
 #define m3_rev 0
+
+#define P0 1013.25
 
 VL53L1X distanceSensor;
 
@@ -227,13 +232,6 @@ void setup()
   else
     SerialUSB.println("LIDAR OK!");
 
-  BatteryValue = analogRead(A0) / BATTERY_FACTOR;
-#if TELEMETRY_BATTERY==1
-  SerialUSB.print("BATT:");
-  SerialUSB.println(BatteryValue);
-#endif
-
-
   // Take first laser reading
   distanceSensor.startMeasurement(); //Jose Julio, agregale TIMEOUT para que no se cuelgue. Plis
   while (distanceSensor.newDataReady() == false)
@@ -245,10 +243,44 @@ void setup()
   timer_laser = millis();
   SerialUSB.print("Laser Alt:");
   SerialUSB.println(laser_height);
+  SerialUSB.println();
 
+  //Testing BMP280
+  if (!bme.begin()) {
+    SerialUSB.println("Could not find a valid BMP280 sensor, check wiring!");
+    delay(2000);
+  }
+  else
+  {
+    SerialUSB.println("Pressure Sensor OK! ");
+    SerialUSB.print("BMP280 Temperature = ");
+    SerialUSB.print(bme.readTemperature());
+    SerialUSB.println(" *C");
+
+    SerialUSB.print("BMP280 Pressure = ");
+    SerialUSB.print(bme.readPressure());
+    SerialUSB.println(" Pa");
+
+    SerialUSB.print("BMP280 Approx altitude = ");
+    SerialUSB.print(bme.readAltitude(1013.25)); // this should be adjusted to your local forcase
+    SerialUSB.println(" m");
+
+    SerialUSB.println();
+
+
+  }
+
+  BatteryValue = analogRead(A0) / BATTERY_FACTOR;
+#if TELEMETRY_BATTERY==1
+  SerialUSB.print("BATT:");
+  SerialUSB.print(BatteryValue);
+  SerialUSB.println(" V");
+#endif
+
+  /***********/
   SerialUSB.println("Blimpduino by JJROBOTS & mRo v0.10");
   SerialUSB.println("Start...");
-  
+
   timer_laser_old = micros();
   timer_mpu_old = micros();
 
@@ -293,19 +325,19 @@ void loop()
     modeSelector = 1;
   }
 
-  if ((iCH5 & 2) == 2){
-    modeSelector+=2;
+  if ((iCH5 & 2) == 2) {
+    modeSelector += 2;
   }
 
   if ((modeSelector != 2) && (modeSelector != 3)) { //Resets the angle so it avoids overshooting and knows what angle to keep when yawStabilize is selected.
     target_angle = MPU_yaw_angle;
   }
 
-  if ((modeSelector != 1) && (modeSelector != 3)) { //Selects the current altitude to hold when switching to Alt Hold. 
+  if ((modeSelector != 1) && (modeSelector != 3)) { //Selects the current altitude to hold when switching to Alt Hold.
     target_height = height;
   }
-  
-   
+
+
   if (millis() - timer_newData > 2000) {   //<--- Move this to state 100 later.
     modeSelector = 100; //NO UDP DATA MODE
   }
@@ -313,7 +345,7 @@ void loop()
   /*------->Mode Selector Ends<-------*/
 
   /*System mode is better know as the "system state" and is controlled by modeSelector (above). modeSelector is mainly controlled by you and external sources.*/
-  
+
   /*------->System Mode begins<-------*/
   //static unsigned long timer_sysMode = 0;
 
@@ -343,7 +375,7 @@ void loop()
       yawStabilized();
       altitudeManual(4);
 
-      m_set(mR, mLeft_Value, 4); //DeadZone set to 4. 
+      m_set(mR, mLeft_Value, 4); //DeadZone set to 4.
       m_set(mV, mVertical_Value, 4);
       m_set(mL, mRight_Value, 4);
       break;
@@ -352,7 +384,7 @@ void loop()
       yawStabilized();
       altitudeHold();
 
-      m_set(mR, mLeft_Value, 4); //DeadZone set to 4. 
+      m_set(mR, mLeft_Value, 4); //DeadZone set to 4.
       m_set(mV, mVertical_Value, 4);
       m_set(mL, mRight_Value, 4);
       break;
