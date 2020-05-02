@@ -1,0 +1,4 @@
+#Fri Aug 31 14:31:42 PDT 2018
+base.0=/Users/j07rdi/Documents/GitHub/Blimpduino2/Android App/blimpduino_v1/app/build/intermediates/transforms/dexMerger/debug/133
+path.0=classes.dex
+renamed.0=classes.dex

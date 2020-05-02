@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/j07rdi/Desktop/Blimpduino Android App/blimpduino_v1/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "/Users/j07rdi/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/a2c2988676914f3053d2779c23eaacd6/res/values-port/values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/j07rdi/Desktop/Blimpduino Android App/blimpduino_v1/C:\\Users\\jjuli\\Documents\\AndroidStudio\\blimpduino_v1\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-port\\values-port.xml",
+            "map": [
+                {
+                    "source": "/Users/j07rdi/Desktop/Blimpduino Android App/blimpduino_v1/C:\\Users\\jjuli\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\579e7f1bb7b280d93296aa1cd9f34005\\res\\values-port\\values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}
